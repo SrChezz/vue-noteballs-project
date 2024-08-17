@@ -1,76 +1,43 @@
 <template>
   <div class="notes">
-    <div class="card has-background-grey-ter p-4 mb-5">
-      <div class="field">
-        <div class="control">
-          <textarea
-            v-model="newNote"
-            class="textarea"
-            placeholder="Add a new note"
-            ref="newNoteRef"
-          ></textarea>
-        </div>
-      </div>
-
-      <div class="field is-grouped is-grouped-right">
-        <div class="control">
-          <button
-            @click="addNote"
-            :disabled="!newNote"
-            class="button is-link has-background-success has-text-success-dark"
-          >
-            Submit
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <Note
-      v-for="note in notes"
-      :key="note.id"
-      :note="note"
-      @deleteClicked="deleteNote"
-    />
+    <AddEditNote
+      v-model="newNote"
+      ref="addEditNoteRef"
+      placeholder="Add a new note"
+    >
+      <template #buttons>
+        <button
+          @click="addNote"
+          :disabled="!newNote"
+          class="button is-link has-background-success has-text-success-dark"
+        >
+          Add New Note
+        </button>
+      </template>
+    </AddEditNote>
+    <Note v-for="note in storeNotes.notes" :key="note.id" :note="note" />
   </div>
 </template>
 
 <script setup>
+// Imports
 import { ref } from 'vue';
 import Note from '@/components/Notes/Note.vue';
-// notes
+import AddEditNote from '@/components/Notes/AddEditNote.vue';
+import { useStoreNotes } from '@/stores/storeNotes';
 
+// notes input
 const newNote = ref('');
-const newNoteRef = ref(null);
+const addEditNoteRef = ref(null);
 
-const notes = ref([
-  {
-    id: 'id1',
-    content:
-      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi quisquam, in impedit excepturi tempore mollitia vel quae assumenda dicta at tenetur quos corrupti illo explicabo obcaecati! Voluptatum facere expedita corrupti.',
-  },
-  {
-    id: 'id2',
-    content:
-      'This is a shorter note. Commodi quisquam, in impedit excepturi tempore mollitia vel quae assumenda dicta at tenetur quos corrupti illo explicabo obcaecati! Voluptatum facere expedita corrupti.',
-  },
-]);
+// store
+const storeNotes = useStoreNotes();
 
+// Addd Note
 const addNote = () => {
-  let note = {
-    id: crypto.randomUUID(),
-    content: newNote.value,
-  };
+  storeNotes.addNote(newNote.value);
 
-  notes.value.unshift(note);
   newNote.value = '';
-  newNoteRef.value.focus();
-};
-
-// Delete Note
-
-const deleteNote = idToDelete => {
-  console.log('deleteNote', idToDelete);
-
-  notes.value = notes.value.filter(note => note.id != idToDelete);
+  addEditNoteRef.value.focusTextarea();
 };
 </script>
