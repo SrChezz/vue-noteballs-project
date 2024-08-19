@@ -1,5 +1,10 @@
 <template>
-  <nav aria-label="main navigation" class="navbar is-success" role="navigation">
+  <nav
+    ref="navarMenuRef"
+    aria-label="main navigation"
+    class="navbar is-success"
+    role="navigation"
+  >
     <div class="container is-max-desktop px-2">
       <div class="navbar-brand">
         <h1 class="navbar-item has-text-white is-size-4 is-family-monospace">
@@ -54,9 +59,17 @@
 <script setup>
 // imports
 import { ref } from 'vue';
+import { onClickOutside } from '@vueuse/core';
 
 // Mobile Nav
 const showMobileNav = ref(false);
+
+// click outside to close
+
+const navarMenuRef = ref(null);
+onClickOutside(navarMenuRef, () => {
+  showMobileNav.value = false;
+});
 </script>
 
 <style>

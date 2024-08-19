@@ -9,6 +9,8 @@
           class="textarea"
           :placeholder="placeholder"
           ref="textareaRef"
+          v-autofocus
+          maxlength="100"
         ></textarea>
       </div>
     </div>
@@ -23,6 +25,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { vAutofocus } from '@/directives/vAutofocus';
 
 defineProps({
   modelValue: {

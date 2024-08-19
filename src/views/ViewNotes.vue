@@ -21,10 +21,11 @@
 
 <script setup>
 // Imports
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Note from '@/components/Notes/Note.vue';
 import AddEditNote from '@/components/Notes/AddEditNote.vue';
 import { useStoreNotes } from '@/stores/storeNotes';
+import { useWatchCharacters } from '@/use/useWatchCharacters';
 
 // notes input
 const newNote = ref('');
@@ -40,4 +41,7 @@ const addNote = () => {
   newNote.value = '';
   addEditNoteRef.value.focusTextarea();
 };
+
+// watch characters
+useWatchCharacters(newNote);
 </script>
