@@ -61,8 +61,7 @@ onClickOutside(modalCardRef, closeModal);
 // keyboard control
 
 const handleKeyboard = e => {
-  console.log('COUNTER');
-  if (event.key === 'Escape') closeModal();
+  if (e.key === 'Escape') closeModal();
 };
 
 onMounted(() => {

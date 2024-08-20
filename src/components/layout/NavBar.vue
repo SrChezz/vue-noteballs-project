@@ -32,6 +32,15 @@
         class="navbar-menu"
         :class="{ 'is-active': showMobileNav }"
       >
+        <div class="navbar-start">
+          <button
+            v-if="storeAuth.userState.id"
+            @click="logout"
+            class="button is-small has-text-success-light my-1 ml-3"
+          >
+            Log out {{ storeAuth.userState.email }}
+          </button>
+        </div>
         <div class="navbar-end">
           <RouterLink
             @click="showMobileNav = false"
@@ -60,6 +69,9 @@
 // imports
 import { ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
+import { useStoreAuth } from '@/stores/storeAuth';
+
+const storeAuth = useStoreAuth();
 
 // Mobile Nav
 const showMobileNav = ref(false);
@@ -70,6 +82,12 @@ const navarMenuRef = ref(null);
 onClickOutside(navarMenuRef, () => {
   showMobileNav.value = false;
 });
+
+// logout
+const logout = () => {
+  showMobileNav.value = false;
+  storeAuth.logoutUser();
+};
 </script>
 
 <style>
